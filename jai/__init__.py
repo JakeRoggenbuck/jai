@@ -1,8 +1,6 @@
 from .jai import *
 from enum import Enum
 
-EOF_TOKEN = Token("", Lexer.EOF)
-
 
 class Tokens(Enum):
     EOF = 0
@@ -49,6 +47,12 @@ class Tokens(Enum):
 
     LoopExit = 34
     Return = 35
+
+    Empty = 0xF09F
+
+
+EOF_TOKEN = Token("", 0)
+EMPTY_TOKEN = Token("", 0xF09F)
 
 
 class Settings:

@@ -48,6 +48,8 @@ enum Tokens {
 
     LoopExit,
     Return,
+
+    Empty = 61599,
 }
 
 impl Tokens {
@@ -97,6 +99,7 @@ impl Tokens {
 
             34 => Tokens::LoopExit,
             35 => Tokens::Return,
+            61599 => Tokens::Empty,
 
             _ => panic!("Unknown value: {}", value),
         }
