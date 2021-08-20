@@ -1,8 +1,7 @@
 # Jai
 Our entry to the [langjam](https://github.com/langjam/jam0001)
 
-# Requirements
-Rust & Python
+# Requirements: Rust & Python
 1. Pip requirements: run 
 	```
 	pip install -r requirements.txt
