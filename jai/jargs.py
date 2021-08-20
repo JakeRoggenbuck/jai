@@ -1,5 +1,5 @@
 from optparse import OptionParser
-import logger
+from logger import Severity, log
 
 
 def get_args():
@@ -10,6 +10,6 @@ def get_args():
     if len(args) > 0:
         filename = args[0]
     else:
-        logger.log("Needed one argument for the filename", logger.Severity.Fatal)
+        log("Needed one argument for the filename", Severity.Fatal)
 
     return filename, options, args
