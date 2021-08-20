@@ -1,5 +1,6 @@
 [package]
 name = "jai"
+repository = "https://github.com/JakeRoggenbuck/jai"
 version = "0.1.0"
 edition = "2018"
 

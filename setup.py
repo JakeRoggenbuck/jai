@@ -9,6 +9,7 @@ setup(
     version="0.1.0",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    url="https://github.com/JakeRoggenbuck/jai",
     rust_extensions=[
         RustExtension("jai", binding=Binding.PyO3),
     ],
