@@ -1,4 +1,5 @@
 # Jai
+Our entry to the [langjam](https://github.com/langjam/jam0001)
 
 # Requirements
 Rust & Python
