@@ -7,9 +7,6 @@ from logger import Severity, log
 
 def main():
     filename, options, args = jargs.get_args()
-
-    print(f"Jai {jai.__version__}")
-
     current_token = EMPTY_TOKEN
 
     if not exists(filename):
