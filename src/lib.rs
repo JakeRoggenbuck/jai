@@ -253,7 +253,7 @@ fn tokenize(part: &str) -> Token {
         "class" | "cls" => Tokens::Class,
         "struct" => Tokens::Struct,
         "int" | "float" | "bool" | "double" | "long" | "str" | "string" | "char" | "short"
-        | "void" => Tokens::TypeName,
+        | "list" | "auto" | "void" => Tokens::TypeName,
         "+" | "-" | "*" | "/" | "^" | ">" | "<" => Tokens::Operator,
         "continue" | "break" => Tokens::LoopExit,
         "return" => Tokens::Return,
