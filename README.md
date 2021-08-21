@@ -22,6 +22,8 @@ Rust & Python
 	pip install ./target/wheels/jai-0.1.0-cp38-cp38-manylinux_2_24_x86_64.whl
 	```
 
+# Subject to change (Draft)
+
 # Syntax
 ## Variable
 ```c
@@ -39,3 +41,20 @@ myfunc() { }
 ```c
 "this is a comment";
 ```
+
+# Types
+| Name | details                      |
+|------|------------------------------|
+| auto | automatically determins type |
+| int  | an integer                   |
+| char | a character                  |
+
+# Debated
+| Name       | details                                      |
+|------------|----------------------------------------------|
+| str        | either a collection of char or it's own type |
+| bool       | a true or false value                        |
+| list       | a collection of any type                     |
+| key: value | a key value hash                             |
+
+
