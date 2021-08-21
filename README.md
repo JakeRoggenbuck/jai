@@ -9,6 +9,8 @@ Rust & Python
 	pip install -r requirements.txt
 	```
 
+<br>
+
 # Build instructions
 1. Build the lexer crate with
 	
@@ -21,11 +23,18 @@ Rust & Python
 	```
 	pip install ./target/wheels/jai-0.1.0-cp38-cp38-manylinux_2_24_x86_64.whl
 	```
+<br>
+
+# Troubleshooting
+If you get something saying `maturin command not found` after you install it via pip. Try using `python3 -m pip` to install it and `python3 -m maturin` to run it.
+
+<br>
 
 # Test
 1. Run build instructions
 2. run pytest
 
+<br>
 
 # Subject to change (Draft)
 
