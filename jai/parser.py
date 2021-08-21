@@ -1,6 +1,7 @@
 from enum import Enum
 from jai import Lexer, Token, Settings, EMPTY_TOKEN, Tokens
 from jai.logger import Severity, log
+from typing import List
 
 
 class DocType:
@@ -11,9 +12,9 @@ class DocType:
 
 class FunctionDoc:
     def __init__(self, part, doctype, types):
-        self.part = part
-        self.doctype = doctype
-        self.types = types
+        self.part: str = part
+        self.doctype: DocType = doctype
+        self.types: List[Token] = types
 
 
 def interpret_function_doc(doc: str) -> FunctionDoc:

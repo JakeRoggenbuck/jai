@@ -23,10 +23,10 @@ def get_args():
     if options.version:
         version()
 
-    filename = None
+    filename = ""
     if len(args) > 0:
-        filename = args[0]
+        filename = str(args[0])
     else:
         log("Needed one argument for the filename", Severity.Fatal)
 
-    return str(filename), options, args
+    return filename, options, args
