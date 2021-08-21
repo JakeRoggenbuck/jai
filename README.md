@@ -5,20 +5,20 @@ Our entry to the [langjam](https://github.com/langjam/jam0001)
 Rust & Python
 1. Pip requirements: run 
 	
-	```
+	```sh
 	pip install -r requirements.txt
 	```
 
 # Build instructions
 1. Build the lexer crate with
 	
-	```
+	```sh
 	maturin build
 	```
 
 2. Install lexer with 
 	
-	```
+	```sh
 	pip install ./target/wheels/jai-0.1.1-*
 	# Add a `--force-reinstall` if reinstalling
 	```
@@ -82,7 +82,7 @@ jai(name, version) {
 ```
 
 ## Token stream from calling lexer.next() in a loop
-```
+```py
 Token("returns string", StringLiteral: 33)
 Token(";", Semicolon: 15)
 Token("takes str, int", StringLiteral: 33)
