@@ -1,6 +1,7 @@
 from optparse import OptionParser
 from jai.logger import Severity, log
 import jai
+from jai.mode import Mode
 
 
 def version():
@@ -23,10 +24,13 @@ def get_args():
     if options.version:
         version()
 
+    mode = Mode.NotSet
     filename = ""
+
     if len(args) > 0:
         filename = str(args[0])
+        mode = Mode.Filemode
     else:
-        log("Needed one argument for the filename", Severity.Fatal)
+        mode = Mode.Interactive
 
-    return filename, options, args
+    return mode, filename, options, args

@@ -2,6 +2,9 @@ from jai import Lexer, Token, Settings, EMPTY_TOKEN
 from jai.jargs import get_args
 from os.path import exists
 from jai.logger import Severity, log
+from enum import Enum
+from jai.console import run_interactive
+from jai.mode import Mode
 
 """jai includes things for use in the parser along with being a lexer
 
@@ -28,12 +31,16 @@ def parser(filename: str):
 
 
 def main():
-    filename, options, args = get_args()
+    mode, filename, options, args = get_args()
 
-    if not exists(filename):
-        log("File does not exist", Severity.Fatal)
+    if mode == Mode.Filemode:
+        if not exists(filename):
+            log("File does not exist", Severity.Fatal)
 
-    parser(filename)
+        parser(filename)
+
+    elif mode == Mode.Interactive:
+        run_interactive()
 
 
 if __name__ == "__main__":
