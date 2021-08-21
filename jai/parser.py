@@ -65,3 +65,26 @@ def interpret_function_doc(doc: str) -> FunctionDoc:
                     type_stack.append(token)
 
     return FunctionDoc(doc, doctype, type_stack)
+
+
+class Parser:
+    def __init__(self):
+        pass
+
+    def spawn_lexer(self, source: str):
+        lexer = Lexer(source, Settings.PARSE_STRING)
+        current_token = EMPTY_TOKEN
+
+        while current_token.token != Lexer.EOF:
+            current_token = lexer.next()
+
+            print(current_token)
+
+    def parse_source_file(self, filename: str):
+        """Parser for a file"""
+        with open(filename, "r") as file:
+            self.spawn_lexer(file.read())
+
+    def parse_line(self, line: str):
+        """Parser for a single line"""
+        self.spawn_lexer(line)
