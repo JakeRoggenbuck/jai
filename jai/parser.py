@@ -25,13 +25,18 @@ def interpret_function_doc(doc: str) -> FunctionDoc:
     DocType.Takes and would return an int so
     Token('int', Tokens.TypeName.value)
     """
-    local_stack = []
-    type_stack = []
+    # The stack of all the tokens, Identifier, TypeName, and Comma
+    local_stack: Token = []
+    # The stack for just TypeNames
+    type_stack: Token = []
+
     # lex the documentation for the function
     current_token = EMPTY_TOKEN
     lexer = Lexer(doc, Settings.PARSE_STRING)
+    # Get all the tokens in the function doc
     while current_token.token != Lexer.EOF:
         current_token = lexer.next()
+        # Add all the tokens to local_stack
         local_stack.append(current_token)
 
     # Check that the documentation isn't empty
@@ -41,7 +46,6 @@ def interpret_function_doc(doc: str) -> FunctionDoc:
     doctype = DocType.NoType
     # Check what action the documentation is
     action = local_stack[0]
-    print(action)
     if action.token == Tokens.Identifier.value:
 
         if action.part == "takes":
