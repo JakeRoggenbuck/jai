@@ -50,6 +50,5 @@ def run_interactive():
     print(logo)
 
     while 1:
-        command = input_wrapper()
-        # Show the command for now. Later this will be sent to the parser
-        log(command, Severity.Debug)
+        line = input_wrapper()
+        yield line
