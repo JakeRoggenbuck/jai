@@ -21,3 +21,21 @@ Rust & Python
 	```
 	pip install ./target/wheels/jai-0.1.0-cp38-cp38-manylinux_2_24_x86_64.whl
 	```
+
+# Syntax
+## Variable
+```c
+type variable = value;
+```
+
+## Functions
+```c
+"returns int";
+"takes int, str";
+myfunc() { }
+```
+
+## Comment
+```c
+"this is a comment";
+```
