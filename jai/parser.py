@@ -91,4 +91,5 @@ class Parser:
 
     def parse_line(self, line: str):
         """Parser for a single line"""
-        self.spawn_lexer(line)
+        if line != "":
+            self.spawn_lexer(line)
