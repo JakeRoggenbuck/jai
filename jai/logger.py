@@ -23,9 +23,9 @@ def log(message: str, severity: Severity):
     # Change the color of the message if severity it high
     if severity == Severity.Warning:
         message_type = colored(message_type, "yellow")
-    if severity == Severity.Error:
+    elif severity == Severity.Error:
         message_type = colored(message_type, "red")
-    if severity == Severity.Fatal:
+    elif severity == Severity.Fatal:
         message_type = colored(message_type, "red")
 
     message = f"{message_type}: {message}"
