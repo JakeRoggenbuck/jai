@@ -1,4 +1,6 @@
 class NotNumericError(Exception):
+    """This is used when type casting or setting a variable"""
+
     def __init__(
         self,
         value,
