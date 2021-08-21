@@ -1,5 +1,5 @@
-"returns string";
-"takes str, int";
+~ returns string ~
+~ takes str, int ~
 jai(name, version) {
 	return "Name: " + name + " Version:" + version;
 }
