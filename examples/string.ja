@@ -1,0 +1,8 @@
+~ This is a string ~
+str name = "Jake";
+
+~ takes str ~
+~ returns str ~
+fn my_func(name) {
+	return "Hello, " + name;
+}

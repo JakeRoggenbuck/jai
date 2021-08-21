@@ -31,6 +31,7 @@ enum Tokens {
     At,
     Percent,
     Bang,
+    Til,
     BackSlash,
 
     Arrow,
@@ -45,6 +46,7 @@ enum Tokens {
     Identifier,
     NumericLiteral,
     StringLiteral,
+    CommentLiteral,
 
     LoopExit,
     Return,
@@ -82,23 +84,25 @@ impl Tokens {
             20 => Tokens::At,
             21 => Tokens::Percent,
             22 => Tokens::Bang,
-            23 => Tokens::BackSlash,
+            23 => Tokens::Til,
+            24 => Tokens::BackSlash,
 
-            24 => Tokens::Arrow,
-            25 => Tokens::Equal,
+            25 => Tokens::Arrow,
+            26 => Tokens::Equal,
 
-            26 => Tokens::Space,
-            27 => Tokens::Tab,
-            28 => Tokens::Newline,
+            27 => Tokens::Space,
+            28 => Tokens::Tab,
+            29 => Tokens::Newline,
 
-            29 => Tokens::SingleQuote,
-            30 => Tokens::DoubleQuote,
-            31 => Tokens::Identifier,
-            32 => Tokens::NumericLiteral,
-            33 => Tokens::StringLiteral,
+            30 => Tokens::SingleQuote,
+            31 => Tokens::DoubleQuote,
+            32 => Tokens::Identifier,
+            33 => Tokens::NumericLiteral,
+            34 => Tokens::StringLiteral,
+            35 => Tokens::CommentLiteral,
 
-            34 => Tokens::LoopExit,
-            35 => Tokens::Return,
+            36 => Tokens::LoopExit,
+            37 => Tokens::Return,
             61599 => Tokens::Empty,
 
             _ => panic!("Unknown value: {}", value),
@@ -175,9 +179,8 @@ impl Token {
 #[pyfunction]
 fn is_char_symbol(ch: char) -> bool {
     match ch {
-        '[' | ']' | '{' | '}' | '(' | ')' | '.' | ',' | ':' | ';' | '=' | '\'' | '\"' | '\\' => {
-            true
-        }
+        '[' | ']' | '{' | '}' | '(' | ')' | '.' | ',' | ':' | ';' | '=' | '\'' | '\"' | '\\'
+        | '~' => true,
         _ => false,
     }
 }
@@ -277,6 +280,7 @@ fn tokenize(part: &str) -> Token {
         "@" => Tokens::At,
         "%" => Tokens::Percent,
         "!" => Tokens::Bang,
+        "~" => Tokens::Til,
         "\\" => Tokens::BackSlash,
 
         "->" => Tokens::Arrow,
@@ -306,6 +310,11 @@ fn tokenize(part: &str) -> Token {
             token = Tokens::StringLiteral;
             part.pop();
         }
+
+        if part.ends_with("~") {
+            token = Tokens::CommentLiteral;
+            part.pop();
+        }
     }
 
     return Token { part, token };
@@ -324,8 +333,9 @@ struct Lexer {
 
 bitflags! {
     struct Settings: u32 {
-        const PARSE_STRING = 0b00000001;
-        const ALL = Self::PARSE_STRING.bits;
+        const PARSE_STRING = 0b1;
+        const PARSE_COMMENTS = 0b10;
+        const ALL = Self::PARSE_STRING.bits + Self::PARSE_COMMENTS.bits;
     }
 }
 
@@ -356,15 +366,18 @@ impl Lexer {
         self.curr_char = self.chars[self.index];
     }
 
-    fn skip_over_char_set(&mut self, ch: char) -> String {
+    fn skip_over_char_set(&mut self, ch: char, start_skip: bool) -> String {
         let mut string: String = String::new();
-        self.char_forward();
+        if start_skip {
+            self.char_forward();
+        }
         while !(self.curr_char == ch) {
             string.push(self.curr_char);
             self.char_forward();
         }
 
         // Add something at the end to identify it
+        // This is so the tokenize function can catch what it was skipping over
         string = string + &ch.to_string();
         self.char_forward();
         return string;
@@ -391,14 +404,21 @@ impl Lexer {
             self.curr_char = self.chars[self.index];
             self.next_char = self.chars[self.index + 1];
 
-            if (self.settings & Settings::PARSE_STRING.bits) == Settings::PARSE_STRING.bits {
+            if (self.settings - Settings::PARSE_STRING.bits) != self.settings {
                 if self.curr_char == '"' {
-                    let skipped_over = self.skip_over_char_set('"');
+                    let skipped_over = self.skip_over_char_set('"', true);
                     return Some(tokenize(&skipped_over));
                 }
 
                 if self.curr_char == '\'' {
-                    let skipped_over = self.skip_over_char_set('\'');
+                    let skipped_over = self.skip_over_char_set('\'', true);
+                    return Some(tokenize(&skipped_over));
+                }
+            }
+
+            if (self.settings - Settings::PARSE_COMMENTS.bits) != self.settings {
+                if self.curr_char == '~' {
+                    let skipped_over = self.skip_over_char_set('~', false);
                     return Some(tokenize(&skipped_over));
                 }
             }

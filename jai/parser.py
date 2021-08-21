@@ -73,7 +73,7 @@ class Parser:
         pass
 
     def spawn_lexer(self, source: str):
-        return Lexer(source, Settings.PARSE_STRING)
+        return Lexer(source, Settings.ALL)
 
     def loop(self, source: str):
         lexer = self.spawn_lexer(source)

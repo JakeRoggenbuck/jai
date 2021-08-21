@@ -1,5 +1,5 @@
-"returns string";
-"takes str, int";
-jai(name, version) {
+~ returns string ~
+~ takes str, int ~
+fn jai(name, version) {
 	return "This lang is called " + name + " and we are on version: " + version;
 }

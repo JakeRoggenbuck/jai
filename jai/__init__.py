@@ -42,23 +42,24 @@ class Tokens(Enum):
     At = 20
     Percent = 21
     Bang = 22
-    BackSlash = 23
+    Til = 23
+    BackSlash = 24
 
-    Arrow = 24
-    Equal = 25
+    Arrow = 25
+    Equal = 26
 
-    Space = 26
-    Tab = 27
-    Newline = 28
+    Space = 27
+    Tab = 28
+    Newline = 29
 
-    SingleQuote = 29
-    DoubleQuote = 30
-    Identifier = 31
-    NumericLiteral = 32
-    StringLiteral = 33
+    SingleQuote = 30
+    DoubleQuote = 31
+    Identifier = 32
+    NumericLiteral = 33
+    StringLiteral = 34
 
-    LoopExit = 34
-    Return = 35
+    LoopExit = 35
+    Return = 36
 
     Empty = 0xF09F
 
@@ -68,8 +69,9 @@ EMPTY_TOKEN = Token("", 0xF09F)
 
 
 class Settings:
-    PARSE_STRING = 1
-    ALL = PARSE_STRING
+    PARSE_STRING = 0x1
+    PARSE_COMMENTS = 0x10
+    ALL = PARSE_STRING + PARSE_COMMENTS
 
 
 __version__ = "0.1.1"

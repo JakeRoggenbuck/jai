@@ -50,21 +50,14 @@ type variable = value;
 
 ## Functions
 ```c
-// First suggestion
-"returns int";
-"takes int, str";
-myfunc() { }
-```
-
-```c
-// Second suggestion
-"returns int and takes int, str";
-myfunc() { }
+~ returns int ~;
+~ takes int, str ~;
+fn myfunc() { }
 ```
 
 ## Comment
 ```c
-"this is a comment";
+~ this is a comment ~;
 ```
 
 # Types
@@ -76,8 +69,8 @@ myfunc() { }
 # Turning source into tokens
 ## Source code
 ```c
-"returns string";
-"takes str, int";
+~ returns string ~;
+~ takes str, int ~;
 jai(name, version) {
 	return "Name: " + name + " Version:" + version;
 }
