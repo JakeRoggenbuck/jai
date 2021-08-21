@@ -22,6 +22,11 @@ Rust & Python
 	pip install ./target/wheels/jai-0.1.0-cp38-cp38-manylinux_2_24_x86_64.whl
 	```
 
+# Test
+1. Run build instructions
+2. run the test file tests/test_all.py
+
+
 # Subject to change (Draft)
 
 # Decisions
