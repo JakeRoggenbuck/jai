@@ -19,7 +19,7 @@ Rust & Python
 2. Install lexer with 
 	
 	```
-	pip install ./target/wheels/jai-0.1.1-cp38-cp38-manylinux_2_24_x86_64.whl
+	pip install ./target/wheels/jai-0.1.1-*
 	```
 
 # Troubleshooting
@@ -75,7 +75,7 @@ myfunc() { }
 "returns string";
 "takes str, int";
 jai(name, version) {
-	return "This lang is called " + name + " and we are on version: " + version;
+	return "Name: " + name + " Version:" + version;
 }
 ```
 
@@ -93,11 +93,11 @@ Token("version", Identifier: 31)
 Token(")", RightParen: 11)
 Token("{", LeftBrace: 6)
 Token("return", Return: 35)
-Token("This lang is called ", StringLiteral: 33)
+Token("Name: ", StringLiteral: 33)
 Token("+", Operator: 5)
 Token("name", Identifier: 31)
 Token("+", Operator: 5)
-Token(" and we are on version: ", StringLiteral: 33)
+Token(" Version:", StringLiteral: 33)
 Token("+", Operator: 5)
 Token("version", Identifier: 31)
 Token(";", Semicolon: 15)
