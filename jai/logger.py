@@ -18,16 +18,17 @@ def log(message: str, severity: Severity):
         return
 
     # Add the type of log before the message
-    message = f"{severity.name}: {message}"
+    message_type = f"{severity.name}"
 
     # Change the color of the message if severity it high
     if severity == Severity.Warning:
-        message = colored(message, "yellow")
+        message_type = colored(message_type, "yellow")
     if severity == Severity.Error:
-        message = colored(message, "red")
+        message_type = colored(message_type, "red")
     if severity == Severity.Fatal:
-        message = colored(message, "red")
+        message_type = colored(message_type, "red")
 
+    message = f"{message_type}: {message}"
     print(message)
 
     # Quit the program if the severity is fatal
