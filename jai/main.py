@@ -1,8 +1,7 @@
-import jai
 from jai import Lexer, Token, Settings, EMPTY_TOKEN
-import jargs
+from jai.jargs import get_args
 from os.path import exists
-from logger import Severity, log
+from jai.logger import Severity, log
 
 """jai includes things for use in the parser along with being a lexer
 
@@ -29,7 +28,7 @@ def parser(filename: str):
 
 
 def main():
-    filename, options, args = jargs.get_args()
+    filename, options, args = get_args()
 
     if not exists(filename):
         log("File does not exist", Severity.Fatal)

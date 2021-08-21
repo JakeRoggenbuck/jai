@@ -1,5 +1,5 @@
 from optparse import OptionParser
-from logger import Severity, log
+from jai.logger import Severity, log
 import jai
 
 
@@ -29,4 +29,4 @@ def get_args():
     else:
         log("Needed one argument for the filename", Severity.Fatal)
 
-    return filename, options, args
+    return str(filename), options, args
