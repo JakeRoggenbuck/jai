@@ -73,4 +73,4 @@ class Settings:
 
 
 __version__ = "0.1.0"
-__author__ = "jakeroggenbuck and adamhutchings"
+__author__ = "jakeroggenbuck & adamhutchings"

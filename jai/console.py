@@ -38,6 +38,7 @@ def run_interactive():
 
     line_2 += "Documentation: https://github.com/JakeRoggenbuck/jai/wiki"
     line_4 += f"Version: {colored(jai.__version__, 'green')}"
+    line_5 += f"Authors: {jai.__author__}"
 
     lines = [line_1, line_2, line_3, line_4, line_5, line_6]
     lines = [line + "\n" for line in lines]
