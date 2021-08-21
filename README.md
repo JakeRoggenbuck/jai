@@ -20,10 +20,12 @@ Rust & Python
 	
 	```
 	pip install ./target/wheels/jai-0.1.1-*
+	# Add a `--force-reinstall` if reinstalling
 	```
 
 # Troubleshooting
-If you get something saying `maturin command not found` after you install it via pip. Try using `python3 -m pip` to install it and `python3 -m maturin` to run it.
+- If you get something saying `maturin command not found` after you install it via pip. Try using `python3 -m pip` to install it and `python3 -m maturin` to run it.
+- If jai does not seem to change after editing the source, make sure to do the build instructions again and use `--force-reinstall`
 
 # Test
 1. Run build instructions
