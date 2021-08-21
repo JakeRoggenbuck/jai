@@ -2,6 +2,7 @@ from enum import Enum
 from jai import Lexer, Token, Settings, EMPTY_TOKEN, Tokens
 from jai.logger import Severity, log
 from typing import List
+from os.path import exists
 
 
 class DocType:
@@ -82,6 +83,9 @@ class Parser:
 
     def parse_source_file(self, filename: str):
         """Parser for a file"""
+        if not exists(filename):
+            log("File does not exist", Severity.Fatal)
+
         with open(filename, "r") as file:
             self.spawn_lexer(file.read())
 
