@@ -1,6 +1,6 @@
 from enum import Enum
 from jai import Lexer, Token, Settings, EMPTY_TOKEN, Tokens
-from logger import Severity, log
+from jai.logger import Severity, log
 
 
 class DocType:
@@ -18,12 +18,12 @@ class FunctionDoc:
 
 def interpret_function_doc(doc: str) -> FunctionDoc:
     local_stack = []
-
     # lex the documentation for the function
     current_token = EMPTY_TOKEN
     lexer = Lexer(doc, Settings.PARSE_STRING)
     while current_token.token != Lexer.EOF:
-        local_stack.append(lexer.next())
+        current_token = lexer.next()
+        local_stack.append(current_token)
 
     # Check that the documentation isn't empty
     if len(local_stack) < 1:
