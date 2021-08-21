@@ -1,4 +1,4 @@
-# Jai
+# Jai 0.1.1
 Our entry to the [langjam](https://github.com/langjam/jam0001)
 
 # Requirements:
@@ -19,7 +19,7 @@ Rust & Python
 2. Install lexer with 
 	
 	```
-	pip install ./target/wheels/jai-0.1.0-cp38-cp38-manylinux_2_24_x86_64.whl
+	pip install ./target/wheels/jai-0.1.1-cp38-cp38-manylinux_2_24_x86_64.whl
 	```
 
 # Troubleshooting
@@ -64,20 +64,10 @@ myfunc() { }
 ```
 
 # Types
-| Name | details                      |
-|------|------------------------------|
-| int  | an integer                   |
-| char | a character                  |
-
-# Debated
-| Name       | details                                      |
-|------------|----------------------------------------------|
-| auto       | automatically determins type                 |
-| str        | either a collection of char or it's own type |
-| bool       | a true or false value                        |
-| list       | a collection of any type                     |
-| key: value | a key value hash                             |
-
+| Name | details    |
+|------|------------|
+| int  | an integer |
+| str  | a string   |
 
 # Turning source into tokens
 ## Source code

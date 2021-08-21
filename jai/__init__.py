@@ -72,5 +72,5 @@ class Settings:
     ALL = PARSE_STRING
 
 
-__version__ = "0.1.0"
-__author__ = "jakeroggenbuck and adamhutchings"
+__version__ = "0.1.1"
+__author__ = "jakeroggenbuck & adamhutchings"
