@@ -24,6 +24,11 @@ Rust & Python
 
 # Subject to change (Draft)
 
+# Decisions
+- pointers?
+- char and then char array or lists?
+- auto?
+
 # Syntax
 ## Variable
 ```c
@@ -45,13 +50,13 @@ myfunc() { }
 # Types
 | Name | details                      |
 |------|------------------------------|
-| auto | automatically determins type |
 | int  | an integer                   |
 | char | a character                  |
 
 # Debated
 | Name       | details                                      |
 |------------|----------------------------------------------|
+| auto       | automatically determins type                 |
 | str        | either a collection of char or it's own type |
 | bool       | a true or false value                        |
 | list       | a collection of any type                     |
