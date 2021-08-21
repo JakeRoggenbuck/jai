@@ -23,7 +23,6 @@ def input_wrapper():
 
 
 def run_interactive():
-
     line_1 = colored("   ___       _ ", "blue")
     line_2 = colored("  |_  |     (_)", "blue")
     line_3 = colored("    | | __ _ _ ", "blue")
@@ -32,18 +31,21 @@ def run_interactive():
     line_6 = colored("\\____/ \\__,_|_|", "blue")
 
     lines = [line_1, line_2, line_3, line_4, line_5, line_6]
+    # Add vertical line to lines 2-6
     lines = [line + "    |    " for line in lines[1:]]
 
     line_2, line_3, line_4, line_5, line_6 = lines
-
+    # Add specific text after vertical lines
     line_2 += colored("Interactive mode!", "blue")
     line_3 += "Documentation: https://github.com/JakeRoggenbuck/jai/wiki"
     line_5 += f"Version: {colored(jai.__version__, 'green')}"
     line_6 += f"Authors: {jai.__author__}"
 
     lines = [line_1, line_2, line_3, line_4, line_5, line_6]
+    # Add a newline to all lines 1-6
     lines = [line + "\n" for line in lines]
 
+    # Join all the lines back into a block
     logo = "".join(lines)
     print(logo)
 
