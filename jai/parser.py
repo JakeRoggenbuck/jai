@@ -79,7 +79,7 @@ class Parser:
         while current_token.token != Lexer.EOF:
             current_token = lexer.next()
 
-            print(current_token)
+            log(current_token, Severity.Raw)
 
     def parse_source_file(self, filename: str):
         """Parser for a file"""
