@@ -28,6 +28,8 @@ Rust & Python
 - pointers?
 - char and then char array or lists?
 - auto?
+- first class functions?
+- Should we do cruz-lang style comments with added line terminator?
 
 # Syntax
 ## Variable
@@ -37,8 +39,15 @@ type variable = value;
 
 ## Functions
 ```c
+// First suggestion
 "returns int";
 "takes int, str";
+myfunc() { }
+```
+
+```c
+// Second suggestion
+"returns int and takes int, str";
 myfunc() { }
 ```
 
