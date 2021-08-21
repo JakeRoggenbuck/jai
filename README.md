@@ -24,7 +24,7 @@ Rust & Python
 
 # Test
 1. Run build instructions
-2. run the test file tests/test_all.py
+2. run pytest
 
 
 # Subject to change (Draft)

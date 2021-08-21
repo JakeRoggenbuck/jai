@@ -4,7 +4,7 @@ from jai.logger import Severity, log
 
 
 class DocType:
-    NoType = 1
+    NoType = 0
     Takes = 1
     Returns = 2
 
@@ -18,6 +18,7 @@ class FunctionDoc:
 
 def interpret_function_doc(doc: str) -> FunctionDoc:
     local_stack = []
+    type_stack = []
     # lex the documentation for the function
     current_token = EMPTY_TOKEN
     lexer = Lexer(doc, Settings.PARSE_STRING)
@@ -32,7 +33,8 @@ def interpret_function_doc(doc: str) -> FunctionDoc:
     doctype = DocType.NoType
     # Check what action the documentation is
     action = local_stack[0]
-    if action.token == Tokens.Identifier:
+    print(action)
+    if action.token == Tokens.Identifier.value:
 
         if action.part == "takes":
             doctype = DocType.Takes
@@ -45,8 +47,8 @@ def interpret_function_doc(doc: str) -> FunctionDoc:
         # For takes and return check for the pattern of a type name
         # followed by a comma unless it's the last one
         if doctype == DocType.Returns or doctype == DocType.Takes:
-            index = 1
-            while (len(local_stack) - 1) > index:
-                print(index, local_stack[index])
+            for token in local_stack:
+                if token.token == Tokens.TypeName:
+                    type_stack.append(token)
 
-    return FunctionDoc(doc, doctype, local_stack)
+    return FunctionDoc(doc, doctype, type_stack)
