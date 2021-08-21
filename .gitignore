@@ -1,1 +1,6 @@
 target/
+__pycache__/
+*.py[cod]
+Cargo.lock
+*.egg-info/
+*.egg
