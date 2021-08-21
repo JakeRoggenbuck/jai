@@ -73,7 +73,11 @@ class Parser:
         pass
 
     def spawn_lexer(self, source: str):
-        lexer = Lexer(source, Settings.PARSE_STRING)
+        return Lexer(source, Settings.PARSE_STRING)
+
+    def loop(self, source: str):
+        lexer = self.spawn_lexer(source)
+
         current_token = EMPTY_TOKEN
 
         while current_token.token != Lexer.EOF:
@@ -87,9 +91,9 @@ class Parser:
             log("File does not exist", Severity.Fatal)
 
         with open(filename, "r") as file:
-            self.spawn_lexer(file.read())
+            self.loop(file.read())
 
     def parse_line(self, line: str):
         """Parser for a single line"""
         if line != "":
-            self.spawn_lexer(line)
+            self.loop(line)
