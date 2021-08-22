@@ -165,7 +165,7 @@ class Parser:
 
             for location in locations:
                 # each place a rule can occur
-                self.check_rule_in_place(location, rule_object, rule)
+                self.check_rule_in_place(rule_object, rule, location)
 
     def parse_source_file(self, filename: str):
         """Parser for a file"""
