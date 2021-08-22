@@ -72,28 +72,40 @@ def interpret_function_doc(doc: str) -> FunctionDoc:
     return FunctionDoc(doc, doctype, type_stack)
 
 
-@dataclass
-class Rule:
-    name: str
-    rule: List[Tokens]
-
-
-@dataclass
 class EmptyAssignment:
-    type_name: Tokens
-    identifier: Tokens
-    semicolon: Tokens
+    def __init__(
+        self,
+        type_name=NotImplemented,
+        identifier=NotImplemented,
+        semicolon=NotImplemented,
+    ):
+        self.type_name = type_name
+        self.identifier = identifier
+        self.semicolon = semicolon
+
+        self.name: str = "empty assignment"
+        self.rule: List[Tokens] = [Tokens.TypeName, Tokens.Identifier, Tokens.Semicolon]
+
+    def filled(self):
+        return (
+            self.type_name is not NotImplemented
+            and self.identifier is not NotImplemented
+            and self.semicolon is not NotImplemented
+        )
+
+    def __repr__(self):
+        return "EmptyAssignment(" + " ".join([str(a) for a in self.rule]) + ")"
 
 
-RULES = [
-    Rule("empty assignment", [Tokens.TypeName, Tokens.Identifier, Tokens.Semicolon])
-]
+RULES = [EmptyAssignment]
 
 
-def check_rules(statements: List[Token]):
+def check_rules(statements):
     for rule_object in RULES:
-        name = rule_object.name
-        rule = rule_object.rule
+        rule_object_instance = rule_object()
+
+        name = rule_object_instance.name
+        rule = rule_object_instance.rule
 
         # Find all places this rule can start
         locations = list(locate(statements, lambda x: x.token == rule[0].value))
@@ -114,7 +126,14 @@ def check_rules(statements: List[Token]):
 
             if current_count == len(rule):
                 # The rule was followed
-                log(f"{statements} has {name}", Severity.Debug)
+
+                new = [rule_object(*statements[location : location + len(rule)])]
+                before = statements[0:location]
+                after = statements[location + len(rule) :]
+
+                statements = before + new + after
+
+        log(str(statements), Severity.Error)
 
 
 class Parser:
