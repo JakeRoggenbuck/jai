@@ -6,7 +6,6 @@ from os.path import exists
 from jai.mode import Mode
 from jai.ast import ASTStmt
 from more_itertools import locate
-from dataclasses import dataclass
 
 
 class DocType:
@@ -75,9 +74,9 @@ def interpret_function_doc(doc: str) -> FunctionDoc:
 class EmptyAssignment:
     def __init__(
         self,
-        type_name=NotImplemented,
-        identifier=NotImplemented,
-        semicolon=NotImplemented,
+        type_name=0,
+        identifier=0,
+        semicolon=0,
     ):
         self.type_name = type_name
         self.identifier = identifier
@@ -85,6 +84,41 @@ class EmptyAssignment:
 
         self.name: str = "empty assignment"
         self.rule: List[Tokens] = [Tokens.TypeName, Tokens.Identifier, Tokens.Semicolon]
+
+        self.token = None
+
+    def filled(self):
+        return not self.type_name and not self.identifier and not self.semicolon
+
+    def __repr__(self):
+        return "EmptyAssignment(" + " ".join([str(a) for a in self.rule]) + ")"
+
+
+class IntAssignment:
+    def __init__(
+        self,
+        type_name=0,
+        identifier=0,
+        assignment=0,
+        numeric_literal=0,
+        semicolon=0,
+    ):
+        self.type_name = type_name
+        self.identifier = identifier
+        self.assignment = assignment
+        self.numeric_literal = numeric_literal
+        self.semicolon = semicolon
+
+        self.name: str = "int assignment"
+        self.rule: List[Tokens] = [
+            Tokens.TypeName,
+            Tokens.Identifier,
+            Tokens.Assignment,
+            Tokens.NumericLiteral,
+            Tokens.Semicolon,
+        ]
+
+        self.token = None
 
     def filled(self):
         return (
@@ -94,46 +128,10 @@ class EmptyAssignment:
         )
 
     def __repr__(self):
-        return "EmptyAssignment(" + " ".join([str(a) for a in self.rule]) + ")"
+        return "IntAssignment(" + " ".join([str(a) for a in self.rule]) + ")"
 
 
-RULES = [EmptyAssignment]
-
-
-def check_rules(statements):
-    for rule_object in RULES:
-        rule_object_instance = rule_object()
-
-        name = rule_object_instance.name
-        rule = rule_object_instance.rule
-
-        # Find all places this rule can start
-        locations = list(locate(statements, lambda x: x.token == rule[0].value))
-
-        for location in locations:
-            # each place a rule can occur
-
-            current_count = 0
-            for i, part in enumerate(rule):
-
-                # Check bounds
-                if (location + i) < len(statements):
-
-                    # Check if the current token is where it should in accordance
-                    # with the rule and it's location
-                    if statements[location + i].token == part.value:
-                        current_count += 1
-
-            if current_count == len(rule):
-                # The rule was followed
-
-                new = [rule_object(*statements[location : location + len(rule)])]
-                before = statements[0:location]
-                after = statements[location + len(rule) :]
-
-                statements = before + new + after
-
-        log(str(statements), Severity.Error)
+RULES = [EmptyAssignment, IntAssignment]
 
 
 class Parser:
@@ -157,7 +155,46 @@ class Parser:
         while current_token.token != Lexer.EOF:
             current_token = lexer.next()
             self.statements.append(current_token)
-            check_rules(self.statements)
+
+            self.check_rules()
+
+    def check_rules(self):
+        for rule_object in RULES:
+            rule_object_instance = rule_object()
+
+            rule = rule_object_instance.rule
+
+            # Find all places this rule can start
+            locations = list(
+                locate(self.statements, lambda x: x.token == rule[0].value)
+            )
+
+            for location in locations:
+                # each place a rule can occur
+
+                current_count = 0
+                for i, part in enumerate(rule):
+
+                    # Check bounds
+                    if (location + i) < len(self.statements):
+
+                        # Check if the current token is where it should in accordance
+                        # with the rule and it's location
+                        if self.statements[location + i].token == part.value:
+                            current_count += 1
+
+                if current_count == len(rule):
+                    # The rule was followed
+
+                    new = [
+                        rule_object(*self.statements[location : location + len(rule)])
+                    ]
+                    before = self.statements[0:location]
+                    after = self.statements[location + len(rule) :]
+
+                    self.statements = before + new + after
+
+                    log(f"Added {new}", Severity.Raw)
 
     def parse_source_file(self, filename: str):
         """Parser for a file"""
