@@ -2,7 +2,7 @@ from typing import List
 from jai import Tokens
 
 
-class EmptyAssignment:
+class AstEmptyAssignment:
     def __init__(
         self,
         type_name=0,
@@ -19,10 +19,10 @@ class EmptyAssignment:
         self.token = None
 
     def __repr__(self):
-        return "EmptyAssignment(" + " ".join([str(a) for a in self.rule]) + ")"
+        return "AstEmptyAssignment(" + " ".join([str(a) for a in self.rule]) + ")"
 
 
-class IntAssignment:
+class AstIntAssignment:
     def __init__(
         self,
         type_name=0,
@@ -49,10 +49,10 @@ class IntAssignment:
         self.token = None
 
     def __repr__(self):
-        return "IntAssignment(" + " ".join([str(a) for a in self.rule]) + ")"
+        return "AstIntAssignment(" + " ".join([str(a) for a in self.rule]) + ")"
 
 
-class StrAssignment:
+class AstStrAssignment:
     def __init__(
         self,
         type_name=0,
@@ -79,7 +79,7 @@ class StrAssignment:
         self.token = None
 
     def __repr__(self):
-        return "StrAssignment(" + " ".join([str(a) for a in self.rule]) + ")"
+        return "AstStrAssignment(" + " ".join([str(a) for a in self.rule]) + ")"
 
 
-RULES = [EmptyAssignment, IntAssignment, StrAssignment]
+RULES = [AstEmptyAssignment, AstIntAssignment, AstStrAssignment]
