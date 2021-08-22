@@ -1,3 +1,4 @@
 maturin
 pytest
 termcolor
+more_itertools
