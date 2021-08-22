@@ -4,7 +4,7 @@ on: push
 
 jobs:
     test:
-        runs-on: ubuntu-18.04
+        runs-on: ubuntu-latest
         steps:
             - name: Checkout
               uses: actions/checkout@v1
@@ -18,6 +18,9 @@ jobs:
               run: |
                   python3 -m pip install --upgrade pip
                   pip3 install -r requirements.txt
+            - name: Build package
+                   maturin build
+                   python3 -m pip install ./target/wheels/*.whl
             - name: Run pytest
               run: |
                   pytest
