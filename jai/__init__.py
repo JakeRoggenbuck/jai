@@ -68,6 +68,7 @@ EMPTY_TOKEN = Token("", 0xF09F)
 
 
 class Settings:
+    NONE = 0
     PARSE_STRING = 1
     ALL = PARSE_STRING
 
