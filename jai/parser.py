@@ -5,6 +5,7 @@ from typing import List
 from os.path import exists
 from jai.mode import Mode
 from jai.ast import ASTStmt
+from more_itertools import locate
 
 
 class DocType:
@@ -70,6 +71,28 @@ def interpret_function_doc(doc: str) -> FunctionDoc:
     return FunctionDoc(doc, doctype, type_stack)
 
 
+rules = [
+    [Tokens.TypeName, Tokens.Identifier, Tokens.Semicolon],
+]
+
+
+def check_rules(statements: List[Token]):
+    for rule in rules:
+
+        # Find all places this rule can start
+        locations = list(locate(statements, lambda x: x.token == rule[0].value))
+
+        log(str(statements), Severity.Debug)
+        log(str(locations), Severity.Debug)
+
+        for location in locations:
+            # each place a rule can occur
+
+            for i, part in enumerate(rule):
+                if (location + i) < len(statements):
+                    print(statements[location + i], part)
+
+
 class Parser:
     def __init__(self, mode: Mode):
         self.statements = []
@@ -87,31 +110,12 @@ class Parser:
         lexer = self.spawn_lexer(source)
 
         current_token = EMPTY_TOKEN
-        left = EMPTY_TOKEN
-        right = EMPTY_TOKEN
-
-        while left.token != Lexer.EOF or right.token != Lexer.EOF:
-
-            left = lexer.next()
-
-            if left != Tokens.Identifier.value:
-                log("Expected identifier", self.error_severity)
-
-            if lexer.next() != Tokens.Equal.value:
-                log("Expected '='", self.error_severity)
-
-            right = lexer.next()
 
         while current_token.token != Lexer.EOF:
             current_token = lexer.next()
-            if (
-                right != Tokens.Identifier.value
-                and right != Tokens.StringLiteral.value
-                and right != Tokens.NumericLiteral.value
-            ):
-                log("Expected identifier", self.error_severity)
-
-            self.statements.append(ASTStmt(left, right))
+            self.statements.append(current_token)
+            check_rules(self.statements)
+            print("NEW\n\n")
 
     def parse_source_file(self, filename: str):
         """Parser for a file"""
