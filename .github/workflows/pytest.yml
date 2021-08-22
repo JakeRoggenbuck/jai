@@ -19,6 +19,7 @@ jobs:
                   python3 -m pip install --upgrade pip
                   pip3 install -r requirements.txt
             - name: Build package
+              run: |
                    maturin build
                    python3 -m pip install ./target/wheels/*.whl
             - name: Run pytest
