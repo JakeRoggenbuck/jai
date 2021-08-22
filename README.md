@@ -1,4 +1,4 @@
-# Jai 0.1.1
+# Jai ![Pytest](https://img.shields.io/github/workflow/status/jakeroggenbuck/jai/pytest?style=for-the-badge)
 Our entry to the [langjam](https://github.com/langjam/jam0001)
 
 ![image](https://user-images.githubusercontent.com/35516367/130336716-99aa86e5-3f79-4081-b8fa-6a133ca90e87.png)
@@ -33,15 +33,6 @@ Rust & Python
 1. Run build instructions
 2. run pytest
 
-# Subject to change (Draft)
-
-# Decisions
-- pointers?
-- char and then char array or lists?
-- auto?
-- first class functions?
-- Should we do cruz-lang style comments with added line terminator?
-
 # Syntax
 ## Variable
 ```c
@@ -53,12 +44,6 @@ type variable = value;
 // First suggestion
 "returns int";
 "takes int, str";
-myfunc() { }
-```
-
-```c
-// Second suggestion
-"returns int and takes int, str";
 myfunc() { }
 ```
 
