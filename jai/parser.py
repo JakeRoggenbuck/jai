@@ -3,6 +3,8 @@ from jai import Lexer, Token, Settings, EMPTY_TOKEN, Tokens
 from jai.logger import Severity, log
 from typing import List
 from os.path import exists
+from jai.mode import Mode
+from jai.ast import ASTStmt
 
 
 class DocType:
@@ -69,8 +71,14 @@ def interpret_function_doc(doc: str) -> FunctionDoc:
 
 
 class Parser:
-    def __init__(self):
-        pass
+    def __init__(self, mode: Mode):
+        self.statements = []
+        self.mode = mode
+
+        if mode == Mode.Interactive:
+            self.error_severity = Severity.Error
+        else:
+            self.error_severity = Severity.Fatal
 
     def spawn_lexer(self, source: str):
         return Lexer(source, Settings.PARSE_STRING)
@@ -79,11 +87,31 @@ class Parser:
         lexer = self.spawn_lexer(source)
 
         current_token = EMPTY_TOKEN
+        left = EMPTY_TOKEN
+        right = EMPTY_TOKEN
+
+        while left.token != Lexer.EOF or right.token != Lexer.EOF:
+
+            left = lexer.next()
+
+            if left != Tokens.Identifier.value:
+                log("Expected identifier", self.error_severity)
+
+            if lexer.next() != Tokens.Equal.value:
+                log("Expected '='", self.error_severity)
+
+            right = lexer.next()
 
         while current_token.token != Lexer.EOF:
             current_token = lexer.next()
+            if (
+                right != Tokens.Identifier.value
+                and right != Tokens.StringLiteral.value
+                and right != Tokens.NumericLiteral.value
+            ):
+                log("Expected identifier", self.error_severity)
 
-            log(current_token, Severity.Raw)
+            self.statements.append(ASTStmt(left, right))
 
     def parse_source_file(self, filename: str):
         """Parser for a file"""
