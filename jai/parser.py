@@ -6,6 +6,7 @@ from os.path import exists
 from jai.mode import Mode
 from jai.ast import ASTStmt
 from more_itertools import locate
+from dataclasses import dataclass
 
 
 class DocType:
@@ -71,26 +72,49 @@ def interpret_function_doc(doc: str) -> FunctionDoc:
     return FunctionDoc(doc, doctype, type_stack)
 
 
-rules = [
-    [Tokens.TypeName, Tokens.Identifier, Tokens.Semicolon],
+@dataclass
+class Rule:
+    name: str
+    rule: List[Tokens]
+
+
+@dataclass
+class EmptyAssignment:
+    type_name: Tokens
+    identifier: Tokens
+    semicolon: Tokens
+
+
+RULES = [
+    Rule("empty assignment", [Tokens.TypeName, Tokens.Identifier, Tokens.Semicolon])
 ]
 
 
 def check_rules(statements: List[Token]):
-    for rule in rules:
+    for rule_object in RULES:
+        name = rule_object.name
+        rule = rule_object.rule
 
         # Find all places this rule can start
         locations = list(locate(statements, lambda x: x.token == rule[0].value))
 
-        log(str(statements), Severity.Debug)
-        log(str(locations), Severity.Debug)
-
         for location in locations:
             # each place a rule can occur
 
+            current_count = 0
             for i, part in enumerate(rule):
+
+                # Check bounds
                 if (location + i) < len(statements):
-                    print(statements[location + i], part)
+
+                    # Check if the current token is where it should in accordance
+                    # with the rule and it's location
+                    if statements[location + i].token == part.value:
+                        current_count += 1
+
+            if current_count == len(rule):
+                # The rule was followed
+                log(f"{statements} has {name}", Severity.Debug)
 
 
 class Parser:
@@ -115,7 +139,6 @@ class Parser:
             current_token = lexer.next()
             self.statements.append(current_token)
             check_rules(self.statements)
-            print("NEW\n\n")
 
     def parse_source_file(self, filename: str):
         """Parser for a file"""
