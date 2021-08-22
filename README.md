@@ -36,20 +36,15 @@ Rust & Python
 # Syntax
 ## Variable
 ```c
+type variable;
 type variable = value;
 ```
 
 ## Functions
 ```c
-// First suggestion
-"returns int";
-"takes int, str";
-myfunc() { }
-```
-
-## Comment
-```c
-"this is a comment";
+fn myfunc(int num) -> int {
+	return num + 10;
+}
 ```
 
 # Types
@@ -57,40 +52,3 @@ myfunc() { }
 |------|------------|
 | int  | an integer |
 | str  | a string   |
-
-# Turning source into tokens
-## Source code
-```c
-"returns string";
-"takes str, int";
-jai(name, version) {
-	return "Name: " + name + " Version:" + version;
-}
-```
-
-## Token stream from calling lexer.next() in a loop
-```py
-Token("returns string", StringLiteral: 33)
-Token(";", Semicolon: 15)
-Token("takes str, int", StringLiteral: 33)
-Token(";", Semicolon: 15)
-Token("jai", Identifier: 31)
-Token("(", LeftParen: 10)
-Token("name", Identifier: 31)
-Token(",", Comma: 13)
-Token("version", Identifier: 31)
-Token(")", RightParen: 11)
-Token("{", LeftBrace: 6)
-Token("return", Return: 35)
-Token("Name: ", StringLiteral: 33)
-Token("+", Operator: 5)
-Token("name", Identifier: 31)
-Token("+", Operator: 5)
-Token(" Version:", StringLiteral: 33)
-Token("+", Operator: 5)
-Token("version", Identifier: 31)
-Token(";", Semicolon: 15)
-Token("}", RightBrace: 7)
-Token("\n", Newline: 28)
-Token("", EOF: 0)
-```
