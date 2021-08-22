@@ -75,3 +75,84 @@ def test_is_part_numeric():
     noncases = ["a", "fsdf", "+++", "!"]
     for noncase in noncases:
         assert not jai.is_part_numeric(noncase)
+
+
+class TestLexer:
+    cases_parse_string = [
+        {
+            "in": "int a = 23;",
+            "out": [
+                jai.Token("int", jai.Tokens.TypeName.value),
+                jai.Token("a", jai.Tokens.Identifier.value),
+                jai.Token("=", jai.Tokens.Assignment.value),
+                jai.Token("23", jai.Tokens.NumericLiteral.value),
+                jai.Token(";", jai.Tokens.Semicolon.value),
+                jai.Token("", jai.Tokens.EOF.value),
+            ],
+        },
+        {
+            "in": "str name = 'jake';",
+            "out": [
+                jai.Token("str", jai.Tokens.TypeName.value),
+                jai.Token("name", jai.Tokens.Identifier.value),
+                jai.Token("=", jai.Tokens.Assignment.value),
+                jai.Token("jake", jai.Tokens.StringLiteral.value),
+                jai.Token(";", jai.Tokens.Semicolon.value),
+                jai.Token("", jai.Tokens.EOF.value),
+            ],
+        },
+        {
+            "in": '"hey";',
+            "out": [
+                jai.Token("hey", jai.Tokens.StringLiteral.value),
+                jai.Token(";", jai.Tokens.Semicolon.value),
+                jai.Token("", jai.Tokens.EOF.value),
+            ],
+        },
+    ]
+
+    cases_dont_parse_string = [
+        {
+            "in": 'str name = "jake";',
+            "out": [
+                jai.Token("str", jai.Tokens.TypeName.value),
+                jai.Token("name", jai.Tokens.Identifier.value),
+                jai.Token("=", jai.Tokens.Assignment.value),
+                jai.Token('"', jai.Tokens.DoubleQuote.value),
+                jai.Token("jake", jai.Tokens.Identifier.value),
+                jai.Token('"', jai.Tokens.DoubleQuote.value),
+                jai.Token(";", jai.Tokens.Semicolon.value),
+                jai.Token("", jai.Tokens.EOF.value),
+            ],
+        }
+    ]
+
+    def test_lexer_parse_string(self):
+        for case in TestLexer.cases_parse_string:
+            lexer = jai.Lexer(case["in"], jai.Settings.PARSE_STRING)
+
+            tokens = []
+            current_token = jai.EMPTY_TOKEN
+
+            while current_token.token != jai.Lexer.EOF:
+                current_token = lexer.next()
+                tokens.append(current_token)
+
+            for found_token, out_token in zip(tokens, case["out"]):
+                assert found_token.part == out_token.part
+                assert found_token.token == out_token.token
+
+    def test_lexer_dont_parse_string(self):
+        for case in TestLexer.cases_dont_parse_string:
+            lexer = jai.Lexer(case["in"], jai.Settings.NONE)
+
+            tokens = []
+            current_token = jai.EMPTY_TOKEN
+
+            while current_token.token != jai.Lexer.EOF:
+                current_token = lexer.next()
+                tokens.append(current_token)
+
+            for found_token, out_token in zip(tokens, case["out"]):
+                assert found_token.part == out_token.part
+                assert found_token.token == out_token.token
