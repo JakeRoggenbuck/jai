@@ -1,0 +1,5 @@
+a: int;
+num: int = 9;
+
+b: str;
+name: str = "jake";
