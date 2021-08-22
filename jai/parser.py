@@ -94,7 +94,65 @@ class Parser:
 
             self.check_rules()
 
+    def check_rule_in_place(self, rule_object, rule, location):
+        """Check if a rule matches in a specific location
+
+        statements = [Identifier, TypeName, Identifier, Semicolon]
+
+                                     ^
+                                  location
+
+        From the point the location point to, does it match the given rule.
+        Lets say the rule is the following...
+
+        rule = [TypeName, Identifier, Semicolon]
+
+        This means it does in fact follow the rule so it would change
+        self.statements to reduce this rule into an object. This rule
+        corresponds to empty assingment or jai.ast.EmptyAssignment
+        so it would reduce statemnts into [Identifier, EmptyAssignment]
+        """
+
+        current_count = 0
+        for i, part in enumerate(rule):
+
+            # Check bounds
+            if (location + i) < len(self.statements):
+
+                # Check if the current token is where it should in accordance
+                # with the rule and it's location
+                if self.statements[location + i].token == part.value:
+                    current_count += 1
+
+        if current_count == len(rule):
+            # The rule was followed
+
+            new = [rule_object(*self.statements[location : location + len(rule)])]
+            before = self.statements[0:location]
+            after = self.statements[location + len(rule) :]
+
+            self.statements = before + new + after
+
+            log(f"Added {new}", Severity.Raw)
+
     def check_rules(self):
+        """Go through each rule and find locations the rule could apply
+
+        For each rule, find a place the rule could be based on how it starts.
+        Lets say the rule is the following...
+        rule = [TypeName, Identifier, Semicolon]
+
+        locations would be the places rule[0] are in the statements list
+
+        Lets say the statements list is the following...
+        statements = [Identifier, TypeName, Identifier, Semicolon]
+
+        It would say a location is 1 because at index 1 of statements there
+        is the rule[0], i.e. TypeName
+
+        Afer it finds all the locations for a rule, it hands off those
+        locations to check_rule_in_place
+        """
         for rule_object in RULES:
             rule_object_instance = rule_object()
 
@@ -107,30 +165,7 @@ class Parser:
 
             for location in locations:
                 # each place a rule can occur
-
-                current_count = 0
-                for i, part in enumerate(rule):
-
-                    # Check bounds
-                    if (location + i) < len(self.statements):
-
-                        # Check if the current token is where it should in accordance
-                        # with the rule and it's location
-                        if self.statements[location + i].token == part.value:
-                            current_count += 1
-
-                if current_count == len(rule):
-                    # The rule was followed
-
-                    new = [
-                        rule_object(*self.statements[location : location + len(rule)])
-                    ]
-                    before = self.statements[0:location]
-                    after = self.statements[location + len(rule) :]
-
-                    self.statements = before + new + after
-
-                    log(f"Added {new}", Severity.Raw)
+                self.check_rule_in_place(location, rule_object, rule)
 
     def parse_source_file(self, filename: str):
         """Parser for a file"""
