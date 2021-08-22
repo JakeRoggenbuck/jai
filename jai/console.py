@@ -7,8 +7,7 @@ EXIT_MESSAGE = "Bye!"
 
 def input_wrapper():
     try:
-        inputted = input(colored("jai> ", "blue", attrs=["bold"]))
-        print("")
+        inputted = input(colored("\njai> ", "blue", attrs=["bold"]))
 
         if inputted.upper() == "Q" or inputted.upper() == "QUIT":
             print(EXIT_MESSAGE)
