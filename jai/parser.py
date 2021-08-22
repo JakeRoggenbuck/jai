@@ -1,7 +1,7 @@
 from enum import Enum
 from jai import Lexer, Token, Settings, EMPTY_TOKEN, Tokens
 from jai.logger import Severity, log
-
+import ast
 
 class DocType:
     NoType = 0
@@ -60,3 +60,20 @@ def interpret_function_doc(doc: str) -> FunctionDoc:
                     type_stack.append(token)
 
     return FunctionDoc(doc, doctype, type_stack)
+
+def main_parse(lexer):
+
+    stmts = []
+    
+    while True:
+        left = lexer.next()
+        if left != Tokens.Identifier.value:
+            logger.log("Expected identifier", Severity.Fatal)
+        if (lexer.next() != Tokens.Equal.value):
+            logger.log("Expected '='", Severity.Fatal)
+        right = lexer.next()
+        if right != Tokens.Identifier.value and right != Tokens.String.value and right != Tokens.Number.value:
+            logger.log("Expected identifier", Severity.Fatal)
+        stmts.append(ast.ASTStmt(left, right))
+
+    return stmts

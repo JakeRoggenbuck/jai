@@ -1,8 +1,8 @@
 import jai
-from jai import Lexer, Token, Settings, EMPTY_TOKEN
 import jargs
 from os.path import exists
 from logger import Severity, log
+import parser
 
 """jai includes things for use in the parser along with being a lexer
 
@@ -22,10 +22,7 @@ def parser(filename: str):
 
         lexer = Lexer(file.read(), Settings.PARSE_STRING)
 
-        while current_token.token != Lexer.EOF:
-            current_token = lexer.next()
-
-            print(current_token)
+        parser.main_parse(lexer)
 
 
 def main():
