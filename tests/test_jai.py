@@ -16,7 +16,7 @@ def test_is_char_operator():
     for case in cases:
         assert jai.is_char_operator(case)
 
-    noncases = [".", "m", "!", "A", "a", "1", "4"]
+    noncases = [".", "m", "!", "A", "a", "1", "4", "3"]
     for noncase in noncases:
         assert not jai.is_char_operator(noncase)
 
