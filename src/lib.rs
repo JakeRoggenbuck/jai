@@ -324,7 +324,8 @@ struct Lexer {
 
 bitflags! {
     struct Settings: u32 {
-        const PARSE_STRING = 0b00000001;
+        const NONE = 0b0;
+        const PARSE_STRING = 0b1;
         const ALL = Self::PARSE_STRING.bits;
     }
 }
