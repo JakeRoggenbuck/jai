@@ -38,14 +38,14 @@ Rust & Python
 # Syntax
 ## Variable
 ```c
-type variable;
-type variable = value;
+variable: type;
+variable: type = value;
 ```
 
 ## Functions
 ```c
 fn myfunc(int num) -> int {
-	return num + 10;
+    return num + 10;
 }
 ```
 
