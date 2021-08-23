@@ -6,6 +6,7 @@ from jai.mode import Mode
 from jai.ast import RULES
 from more_itertools import locate
 from jai.code_gen import gen
+from jai.code_writer import write, Flags
 
 
 class DocType:
@@ -73,11 +74,14 @@ def interpret_function_doc(doc: str) -> FunctionDoc:
 
 class Parser:
     def __init__(self, mode: Mode, options):
-        self.statements = []
+        self.statements: List[Token] = []
         self.mode = mode
         self.code = []
+
         self.outfile = options.outfile
         self.dont_write = options.dont_write
+
+        self.flags = Flags()
 
         if mode == Mode.Interactive:
             self.error_severity = Severity.Error
@@ -108,9 +112,7 @@ class Parser:
                 if not self.outfile:
                     self.outfile = "out.c"
 
-                log(f"Wrote code to {self.outfile}", Severity.Info)
-                with open(self.outfile, "w") as file:
-                    file.write("".join(self.code))
+                write(self.outfile, "".join(self.code), self.flags)
 
     def check_rule_in_place(self, rule_object, rule, location):
         """Check if a rule matches in a specific location
@@ -143,8 +145,6 @@ class Parser:
                     current_count += 1
 
         if current_count == len(rule):
-            # The rule was followed
-
             new = rule_object(*self.statements[location : location + len(rule)])
             before = self.statements[0:location]
             after = self.statements[location + len(rule) :]
@@ -153,6 +153,11 @@ class Parser:
             self.code.append(generated_code)
 
             self.statements = before + [new] + after
+
+            if not self.flags.NeedsString:
+                if hasattr(new, "type_name"):
+                    if new.type_name.part == "str":
+                        self.flags.NeedsString = True
 
     def check_rules(self):
         """Go through each rule and find locations the rule could apply
