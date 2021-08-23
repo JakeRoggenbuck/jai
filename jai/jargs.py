@@ -19,6 +19,23 @@ def get_args():
         help="Get the version",
     )
 
+    ops.add_option(
+        "-o",
+        "--outfile",
+        dest="outfile",
+        default=False,
+        help="Set the output file",
+    )
+
+    ops.add_option(
+        "-d",
+        "--dont_write",
+        action="store_true",
+        dest="dont_write",
+        default=False,
+        help="Outputs the code gen",
+    )
+
     options, args = ops.parse_args()
 
     if options.version:
