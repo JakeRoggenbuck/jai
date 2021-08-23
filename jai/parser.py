@@ -5,6 +5,7 @@ from os.path import exists
 from jai.mode import Mode
 from jai.ast import RULES
 from more_itertools import locate
+from jai.code_gen import gen
 
 
 class DocType:
@@ -74,6 +75,7 @@ class Parser:
     def __init__(self, mode: Mode):
         self.statements = []
         self.mode = mode
+        self.code = []
 
         if mode == Mode.Interactive:
             self.error_severity = Severity.Error
@@ -93,6 +95,8 @@ class Parser:
             self.statements.append(current_token)
 
             self.check_rules()
+
+        log("".join(self.code), Severity.Error)
 
     def check_rule_in_place(self, rule_object, rule, location):
         """Check if a rule matches in a specific location
@@ -127,13 +131,14 @@ class Parser:
         if current_count == len(rule):
             # The rule was followed
 
-            new = [rule_object(*self.statements[location : location + len(rule)])]
+            new = rule_object(*self.statements[location : location + len(rule)])
             before = self.statements[0:location]
             after = self.statements[location + len(rule) :]
 
-            self.statements = before + new + after
+            generated_code = gen(new)
+            self.code += generated_code
 
-            log(f"Added {new}", Severity.Raw)
+            self.statements = before + [new] + after
 
     def check_rules(self):
         """Go through each rule and find locations the rule could apply
