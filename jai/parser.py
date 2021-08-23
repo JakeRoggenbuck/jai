@@ -1,6 +1,6 @@
 from jai import Lexer, Token, Settings, EMPTY_TOKEN, Tokens
 from jai.logger import Severity, log
-from typing import List
+from typing import List, Union
 from os.path import exists
 from jai.mode import Mode
 from jai.ast import RULES
@@ -72,10 +72,12 @@ def interpret_function_doc(doc: str) -> FunctionDoc:
 
 
 class Parser:
-    def __init__(self, mode: Mode):
+    def __init__(self, mode: Mode, options):
         self.statements = []
         self.mode = mode
         self.code = []
+        self.outfile = options.outfile
+        self.dont_write = options.dont_write
 
         if mode == Mode.Interactive:
             self.error_severity = Severity.Error
@@ -96,7 +98,15 @@ class Parser:
 
             self.check_rules()
 
-        log("".join(self.code), Severity.Error)
+        if self.dont_write:
+            log("C code generated\n" + "".join(self.code), Severity.Info)
+        else:
+            if not self.outfile:
+                self.outfile = "out.c"
+
+            log(f"Wrote code to {self.outfile}", Severity.Info)
+            with open(self.outfile, "w") as file:
+                file.write("".join(self.code))
 
     def check_rule_in_place(self, rule_object, rule, location):
         """Check if a rule matches in a specific location
@@ -136,7 +146,7 @@ class Parser:
             after = self.statements[location + len(rule) :]
 
             generated_code = gen(new)
-            self.code += generated_code
+            self.code.append(generated_code)
 
             self.statements = before + [new] + after
 

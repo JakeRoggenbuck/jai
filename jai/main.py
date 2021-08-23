@@ -18,9 +18,9 @@ from jai.parser import Parser
 
 
 def main():
-    mode, filename, _options, _args = get_args()
+    mode, filename, options, args = get_args()
 
-    parser = Parser(mode)
+    parser = Parser(mode, options)
 
     if mode == Mode.Filemode:
         parser.parse_source_file(filename)
