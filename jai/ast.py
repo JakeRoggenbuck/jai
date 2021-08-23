@@ -3,6 +3,14 @@ from jai import Tokens
 
 
 class AstEmptyAssignment:
+    name: str = "empty assignment"
+    rule: List[Tokens] = [
+        Tokens.Identifier,
+        Tokens.Colon,
+        Tokens.TypeName,
+        Tokens.Semicolon,
+    ]
+
     def __init__(
         self,
         identifier=0,
@@ -15,14 +23,6 @@ class AstEmptyAssignment:
         self.type_name = type_name
         self.semicolon = semicolon
 
-        self.name: str = "empty assignment"
-        self.rule: List[Tokens] = [
-            Tokens.Identifier,
-            Tokens.Colon,
-            Tokens.TypeName,
-            Tokens.Semicolon,
-        ]
-
         self.token = None
 
     def __repr__(self):
@@ -30,6 +30,16 @@ class AstEmptyAssignment:
 
 
 class AstIntAssignment:
+    name: str = "int assignment"
+    rule: List[Tokens] = [
+        Tokens.Identifier,
+        Tokens.Colon,
+        Tokens.TypeName,
+        Tokens.Assignment,
+        Tokens.NumericLiteral,
+        Tokens.Semicolon,
+    ]
+
     def __init__(
         self,
         identifier=0,
@@ -46,16 +56,6 @@ class AstIntAssignment:
         self.numeric_literal = numeric_literal
         self.semicolon = semicolon
 
-        self.name: str = "int assignment"
-        self.rule: List[Tokens] = [
-            Tokens.Identifier,
-            Tokens.Colon,
-            Tokens.TypeName,
-            Tokens.Assignment,
-            Tokens.NumericLiteral,
-            Tokens.Semicolon,
-        ]
-
         self.token = None
 
     def __repr__(self):
@@ -63,6 +63,16 @@ class AstIntAssignment:
 
 
 class AstStrAssignment:
+    name: str = "str assignment"
+    rule: List[Tokens] = [
+        Tokens.Identifier,
+        Tokens.Colon,
+        Tokens.TypeName,
+        Tokens.Assignment,
+        Tokens.StringLiteral,
+        Tokens.Semicolon,
+    ]
+
     def __init__(
         self,
         identifier=0,
@@ -78,16 +88,6 @@ class AstStrAssignment:
         self.assignment = assignment
         self.string_literal = string_literal
         self.semicolon = semicolon
-
-        self.name: str = "str assignment"
-        self.rule: List[Tokens] = [
-            Tokens.Identifier,
-            Tokens.Colon,
-            Tokens.TypeName,
-            Tokens.Assignment,
-            Tokens.StringLiteral,
-            Tokens.Semicolon,
-        ]
 
         self.token = None
 
