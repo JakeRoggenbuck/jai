@@ -98,15 +98,19 @@ class Parser:
 
             self.check_rules()
 
-        if self.dont_write:
-            log("C code generated\n" + "".join(self.code), Severity.Info)
-        else:
-            if not self.outfile:
-                self.outfile = "out.c"
+        if self.mode == Mode.Interactive:
+            log("".join(self.code), Severity.Raw)
 
-            log(f"Wrote code to {self.outfile}", Severity.Info)
-            with open(self.outfile, "w") as file:
-                file.write("".join(self.code))
+        elif self.mode == Mode.Filemode:
+            if self.dont_write:
+                log("C code generated\n" + "".join(self.code), Severity.Info)
+            else:
+                if not self.outfile:
+                    self.outfile = "out.c"
+
+                log(f"Wrote code to {self.outfile}", Severity.Info)
+                with open(self.outfile, "w") as file:
+                    file.write("".join(self.code))
 
     def check_rule_in_place(self, rule_object, rule, location):
         """Check if a rule matches in a specific location
