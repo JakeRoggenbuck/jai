@@ -44,7 +44,7 @@ variable: type = value;
 
 ## Functions
 ```c
-fn myfunc(int num) -> int {
+fn myfunc(num: int) -> int {
     return num + 10;
 }
 ```
