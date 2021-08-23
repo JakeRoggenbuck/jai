@@ -33,6 +33,8 @@ Rust & Python
 1. Run build instructions
 2. run pytest
 
+![image](https://user-images.githubusercontent.com/35516367/130384789-ab1589f9-755f-411c-bda7-c9c8344aae7a.png)
+
 # Syntax
 ## Variable
 ```c
