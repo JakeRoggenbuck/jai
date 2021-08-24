@@ -109,6 +109,13 @@ class TestLexer:
                 jai.Token("", jai.Tokens.EOF.value),
             ],
         },
+        {
+            "in": '"hey"',
+            "out": [
+                jai.Token("hey", jai.Tokens.StringLiteral.value),
+                jai.Token("", jai.Tokens.EOF.value),
+            ],
+        },
     ]
 
     cases_dont_parse_string = [
