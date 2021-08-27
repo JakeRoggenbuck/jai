@@ -1,4 +1,10 @@
-from jai.ast import AstIntAssignment, AstStrAssignment, AstEmptyAssignment
+from jai.ast import (
+    AstIntAssignment,
+    AstStrAssignment,
+    AstEmptyAssignment,
+    AstFunctionCall,
+)
+
 from jai.logger import log, Severity
 from jai import Tokens
 
@@ -23,6 +29,10 @@ def empty_assignment(node: AstEmptyAssignment):
     return f"{type_name_string} {node.identifier.part};\n"
 
 
+def func_call(node: AstFunctionCall):
+    return f"{node.funcname.part}({node.arg.part});\n"
+
+
 def gen(node):
     if isinstance(node, AstIntAssignment):
         return int_assignment(node)
@@ -32,3 +42,6 @@ def gen(node):
 
     if isinstance(node, AstEmptyAssignment):
         return empty_assignment(node)
+
+    if isinstance(node, AstFunctionCall):
+        return func_call(node)

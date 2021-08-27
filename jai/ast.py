@@ -2,6 +2,36 @@ from typing import List
 from jai import Tokens
 
 
+class AstFunctionCall:
+    name: str = "function call"
+    rule: List[Tokens] = [
+        Tokens.Identifier,
+        Tokens.LeftParen,
+        Tokens.Identifier,
+        Tokens.RightParen,
+        Tokens.Semicolon,
+    ]
+
+    def __init__(
+        self,
+        funcname=0,
+        leftparen=0,
+        arg=0,
+        rightparen=0,
+        semicolon=0,
+    ):
+        self.funcname = funcname
+        self.leftparen = leftparen
+        self.arg = arg
+        self.rightparen = rightparen
+        self.semicolon = semicolon
+
+        self.token = None
+
+    def __repr__(self):
+        return "AstFunctionCall(" + " ".join([str(a) for a in self.rule]) + ")"
+
+
 class AstEmptyAssignment:
     name: str = "empty assignment"
     rule: List[Tokens] = [
@@ -95,4 +125,4 @@ class AstStrAssignment:
         return "AstStrAssignment(" + " ".join([str(a) for a in self.rule]) + ")"
 
 
-RULES = [AstEmptyAssignment, AstIntAssignment, AstStrAssignment]
+RULES = [AstEmptyAssignment, AstIntAssignment, AstStrAssignment, AstFunctionCall]
