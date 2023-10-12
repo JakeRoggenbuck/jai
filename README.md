@@ -1,4 +1,4 @@
-# Jai ![Pytest](https://img.shields.io/github/workflow/status/jakeroggenbuck/jai/pytest?style=for-the-badge)
+# Jai ![Pytest](https://img.shields.io/github/actions/workflow/status/jakeroggenbuck/jai/pytest.yml?style=for-the-badge)
 Our entry to the [langjam](https://github.com/langjam/jam0001)
 
 ![image](https://user-images.githubusercontent.com/35516367/130336716-99aa86e5-3f79-4081-b8fa-6a133ca90e87.png)
